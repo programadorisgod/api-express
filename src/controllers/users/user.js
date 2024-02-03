@@ -1,32 +1,36 @@
-import { sequelize } from "../../config/conectionDB2.js"
-import User from "../../models/users/user2.js"
 
-
-const getUsers = async (req, res) => {
-
-    try {
-        await sequelize.sync()
-        const users = await User.findAll()
-        res.status(200).json(users)
-    } catch (error) {
-        res.status(500).json({ message: 'Error to get users', error })
-
+export default class UserController {
+    constructor({ userModel }) {
+        this.userModel = userModel
     }
 
-}
+    create = async (req, res) => {
+        try {
+            const newUser = await this.userModel.create({ input: req.body })
+            res.status(201).json(newUser)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+        }
+    }
 
+    findOne = async (req, res) => {
+        try {
+            console.log(req.params.id)
+            const user = await this.userModel.findOne({ id: req.params.id })
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
 
-const createUser = async (req, res) => {
-    const user = req.body
-    try {
-        await sequelize.sync()
-        const newUser = await User.create(user)
-        res.status(201).json(newUser)
+        }
+    }
 
-    } catch (error) {
-        res.status(500).json({ message: 'Error to create user', error })
+    findAll = async (_req, res) => {
+        try {
+            const users = await this.userModel.findAll()
+            res.status(200).json(users)
+        } catch (error) {
+            res.status(500).json({ error: error.message })
+
+        }
     }
 }
-
-
-export { getUsers, createUser }

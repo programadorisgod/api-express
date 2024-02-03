@@ -1,13 +1,22 @@
 import { Router } from "express";
-import { createUser, getUsers } from "../../controllers/users/user.js";
+import UserController from "../../controllers/users/user.js";
 
 
-const routerUser = Router()
-const baseUrl = '/api/v1/users'
 
-routerUser.get(baseUrl, getUsers)
+export const createRouterUser = ({ userModel }) => {
+
+    const routerUser = Router()
+
+    const baseUrl = '/api/v1/users'
+
+    const userController = new UserController({ userModel })
+
+    routerUser.get(baseUrl, userController.findAll)
+
+    routerUser.get(`${baseUrl}/:id`, userController.findOne)
 
 
-routerUser.post(baseUrl, createUser)
+    routerUser.post(baseUrl, userController.create)
 
-export default routerUser
+    return routerUser
+}
