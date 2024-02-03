@@ -11,7 +11,11 @@
   "author": "camidevv",
   "license": "ISC",
   "dependencies": {
-    "express": "4.18.2"
+    "dotenv": "^16.4.1",
+    "express": "4.18.2",
+    "mongoose": "^8.1.1",
+    "mysql2": "^3.9.1",
+    "sequelize": "^6.36.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"

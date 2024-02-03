@@ -1,22 +1,32 @@
-import { createUserModel, getUsersModel } from "../../models/users/user.js"
+import { sequelize } from "../../config/conectionDB2.js"
+import User from "../../models/users/user2.js"
 
 
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
 
-    const listUsers = getUsersModel()
+    try {
+        await sequelize.sync()
+        const users = await User.findAll()
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(500).json({ message: 'Error to get users', error })
 
-    res.status(200).send(listUsers)
+    }
+
 }
 
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
     const user = req.body
+    try {
+        await sequelize.sync()
+        const newUser = await User.create(user)
+        res.status(201).json(newUser)
 
-    const userCreated = createUserModel(user)
-
-    res.status(201).send(userCreated)
+    } catch (error) {
+        res.status(500).json({ message: 'Error to create user', error })
+    }
 }
-
 
 
 export { getUsers, createUser }

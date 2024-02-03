@@ -1,6 +1,8 @@
 import express, { json } from 'express'
 
 import routerUser from './src/routes/users/user.js'
+import conectionDB from './src/config/conectionDB.js'
+import conectionDB2 from './src/config/conectionDB2.js'
 
 const app = express()
 const PORT = 3000
@@ -20,6 +22,13 @@ app.get('/', (req, res) => {
         data
     })
 })
+
+
+/* Conexion DB 
+*/
+
+conectionDB2()
+conectionDB()
 
 /* Routes */
 app.use(routerUser)
